@@ -1,4 +1,1 @@
-# hello-world
-my first repository
-
-LOL
+Hexapod leg model in DRAKE (http://drake.mit.edu/)
