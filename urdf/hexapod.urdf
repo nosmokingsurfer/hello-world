@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="MyHexapodModel" version="1.0">
+   <link name="base_link">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <mass value="1" />
+         <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <geometry>
+            <box size="0.175 0.175 0.1" />
+         </geometry>
+      </visual>
+   </link>
+   
+   <link name="body">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 -0.0171 0.02286" />
+         <mass value="0.40176" />
+         <inertia ixx="0.00105433" ixy="-0.00000019" ixz="0" iyy="0.00081926" iyz="0.00000071" izz="0.00177051" />
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <geometry>
+            <mesh filename="meshes/body.obj" scale="0.001 0.001 0.001" />
+         </geometry>
+         <material name="Cyan">
+            <color rgba="0 1.0 1.0 1.0" />
+         </material>
+      </visual>
+      <collision name="body_bounding_box">
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+            <box size="0.5 0.5 0.44" />
+         </geometry>
+      </collision>
+   </link>
+   
+   <link name="coxa">
+      <inertial>
+         <origin rpy="0 0 0" xyz="-0.00000110 0.02639972 -0.02297300" />
+         <mass value="0.01525104" />
+         <inertia ixx="0.00000655" ixy="0" ixz="0" iyy="0.00000648" iyz="-0.00000062" izz="0.00000650" />
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <geometry>
+            <mesh filename="meshes/coxa.obj" scale="0.001 0.001 0.001" />
+         </geometry>
+         <material name="Cyan">
+            <color rgba="0 0 1.0 1.0" />
+         </material>
+      </visual>
+   </link>
+   
+   <link name="femur">
+      <inertial>
+         <origin rpy="0 0 0" xyz="-0.01997242 0.03689470 -0.00463407" />
+         <mass value="0.11787044" />
+         <inertia ixx="0.00009413" ixy="-0.00000019" ixz="-0.00000019" iyy="0.00002910" iyz="-0.00001283" izz="0.00008980" />
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <geometry>
+            <mesh filename="meshes/femur.obj" scale="0.001 0.001 0.001" />
+         </geometry>
+         <material name="Cyan">
+            <color rgba="0 1.0 0 1.0" />
+         </material>
+      </visual>
+   </link>   
+   
+   <link name="tibia">
+      <inertial>
+         <origin rpy="0 0 0" xyz="-0.02100004 0.03916205 0.00259554" />
+         <mass value="0.01623502" />
+         <inertia ixx="0.00000985" ixy="0" ixz="0" iyy="0.00000646" iyz="0.00000115" izz="0.00001371" />
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <geometry>
+            <mesh filename="meshes/tibia.obj" scale="0.001 0.001 0.001" />
+         </geometry>
+         <material name="Cyan">
+            <color rgba="1.0 0 0 1.0" />
+         </material>
+      </visual>
+   </link>     
+   
+   <joint name="body_fixed" type="fixed">
+      <origin xyz="0 0 0.3" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="body" />
+   </joint>
+   
+   <joint name="body_coxa" type="revolute">
+      <origin xyz="0.032 0.07445 0.04294" rpy="0 0 0" />
+      <parent link="body" />
+      <child link="coxa" />
+	  <axis xyz="0 0 1"/>
+	  <limit effort="30" velocity="1.0" lower="-2.62" upper="2.62" />
+   </joint>
+   
+   <joint name="coxa_femur" type="revolute">
+      <origin xyz="0.021 0.049 -0.0355" rpy="0 0 0" />
+      <parent link="coxa" />
+      <child link="femur" />
+	  <axis xyz="1 0 0"/>
+	  <limit effort="30" velocity="1.0" lower="-2.62" upper="2.62" />
+   </joint>
+   
+   <joint name="femur_tibia" type="revolute">
+      <origin xyz="0.0 0.0605 -0.0225" rpy="-1.57 0 0" />
+      <parent link="femur" />
+      <child link="tibia" />
+	  <axis xyz="1 0 0"/>
+	  <limit effort="30" velocity="1.0" lower="-2.62" upper="2.62" />
+   </joint>
+   
+   <transmission name="body_coxa">
+     <joint name="body_coxa"/>
+     <actuator name="body_coxa_motor">
+       <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+   </transmission>
+   
+   <transmission name="coxa_femur">
+     <joint name="coxa_femur"/>
+     <actuator name="coxa_femur_motor">
+       <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+   </transmission>   
+   
+      
+   <transmission name="femur_tibia">
+     <joint name="femur_tibia"/>
+     <actuator name="femur_tibia_motor">
+       <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+   </transmission>   
+   
+</robot>
